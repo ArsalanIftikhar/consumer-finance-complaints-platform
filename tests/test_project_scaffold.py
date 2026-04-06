@@ -12,6 +12,12 @@ EXPECTED_ROOT_FILES = [
     "Makefile",
 ]
 
+
+EXPECTED_DBT_FILES = [
+    "dbt/complaints_ae/dbt_project.yml",
+    "dbt/complaints_ae/profiles.yml",
+]
+
 EXPECTED_DIRECTORIES = [
     "docs",
     "diagrams",
@@ -38,3 +44,8 @@ def test_expected_root_files_exist() -> None:
 def test_expected_scaffold_directories_exist() -> None:
     missing = [path for path in EXPECTED_DIRECTORIES if not (ROOT / path).is_dir()]
     assert not missing, f"Missing expected scaffold directories: {missing}"
+
+
+def test_expected_dbt_scaffold_files_exist() -> None:
+    missing = [path for path in EXPECTED_DBT_FILES if not (ROOT / path).is_file()]
+    assert not missing, f"Missing expected dbt scaffold files: {missing}"

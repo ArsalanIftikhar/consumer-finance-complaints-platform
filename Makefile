@@ -1,7 +1,7 @@
 .PHONY: install test lint format-check dagster-dev dbt-parse dbt-debug
 
 install:
-	pip install -r requirements.txt
+	python -m pip install -r requirements.txt
 
 test:
 	pytest

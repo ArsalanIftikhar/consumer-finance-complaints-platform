@@ -34,7 +34,7 @@ make lint          # ruff check .
 make test          # pytest
 make dbt-parse     # dbt parse with project/profiles in dbt/complaints_ae
 make dbt-debug     # dbt debug with project/profiles in dbt/complaints_ae
-make dagster-dev   # dagster dev
+make dagster-dev   # dagster dev with src.orchestration.definitions
 ```
 
 ## Current Phase 1 Limitations
