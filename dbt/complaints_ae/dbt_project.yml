@@ -15,11 +15,3 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
-models:
-  complaints_ae:
-    staging:
-      +materialized: view
-    intermediate:
-      +materialized: table
-    marts:
-      +materialized: table
