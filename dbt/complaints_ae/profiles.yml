@@ -1,0 +1,7 @@
+complaints_ae:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../../data/warehouse/complaints.duckdb
+      threads: 4

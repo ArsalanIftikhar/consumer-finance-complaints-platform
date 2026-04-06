@@ -1,0 +1,17 @@
+name: complaints_ae
+version: 1.0.0
+config-version: 2
+
+profile: complaints_ae
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
