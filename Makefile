@@ -13,10 +13,10 @@ format-check:
 	ruff format --check .
 
 dagster-dev:
-	dagster dev
+	PYTHONPATH=. dagster dev -m src.orchestration.definitions
 
 dbt-parse:
-	dbt parse --project-dir dbt/complaints_ae
+	dbt parse --project-dir dbt/complaints_ae --profiles-dir dbt/complaints_ae
 
 dbt-debug:
-	dbt debug --project-dir dbt/complaints_ae
+	dbt debug --project-dir dbt/complaints_ae --profiles-dir dbt/complaints_ae
