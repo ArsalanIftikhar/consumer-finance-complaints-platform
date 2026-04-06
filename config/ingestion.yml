@@ -1,0 +1,7 @@
+cfpb:
+  mode: full_history
+  output_format: parquet
+
+fred:
+  frequency: monthly
+  output_format: parquet
