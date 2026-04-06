@@ -1,0 +1,7 @@
+series:
+  - code: UNRATE
+    name: unemployment_rate
+  - code: FEDFUNDS
+    name: federal_funds_rate
+  - code: CPIAUCSL
+    name: consumer_price_index
