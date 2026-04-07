@@ -33,6 +33,7 @@ See `.env.example` for default scaffold values.
 make lint          # ruff check .
 make test          # pytest
 make ingest-fred   # run FRED ingestion
+make ingest-cfpb   # run CFPB ingestion
 make dbt-parse     # dbt parse with project/profiles in dbt/complaints_ae
 make dbt-debug     # dbt debug with project/profiles in dbt/complaints_ae
 make dagster-dev   # dagster dev with src.orchestration.definitions
@@ -47,8 +48,16 @@ make dagster-dev   # dagster dev with src.orchestration.definitions
 - Outputs are written to `data/bronze/fred/<series_id>/` as one Parquet file per series per run.
 - Metadata is appended to `logs/ingestion_runs.jsonl`.
 
+## CFPB Ingestion
+- Run:
+  ```bash
+  make ingest-cfpb
+  ```
+- Uses `CFPB_BASE_URL` from `.env` when set; otherwise uses configured/default project URL.
+- Writes one raw Parquet file per run to `data/bronze/cfpb_complaints/`.
+- Assumes a JSON response containing records as a top-level list or under `hits`, `complaints`, `data`, or `results`.
+
 ## Current Limitations
-- CFPB ingestion logic is not implemented yet.
 - dbt project structure exists, but models/tests are pending.
 - Dagster definitions are minimal and do not yet materialize assets.
 - Data quality checks are still limited to baseline linting/tests.

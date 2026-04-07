@@ -25,4 +25,4 @@ ingest-fred:
 	PYTHONPATH=. python -m src.ingestion.fred
 
 ingest-cfpb:
-	@echo "Phase 2 foundation ready: CFPB ingestion HTTP step not implemented yet."
+	PYTHONPATH=. python -m src.ingestion.cfpb

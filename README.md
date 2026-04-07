@@ -49,9 +49,10 @@ Consumer finance teams often have complaint data available, but struggle to cons
    make lint
    make test
    ```
-5. Run FRED ingestion:
+5. Run ingestion commands:
    ```bash
    make ingest-fred
+   make ingest-cfpb
    ```
 
 ## FRED Ingestion Notes
@@ -59,7 +60,13 @@ Consumer finance teams often have complaint data available, but struggle to cons
 - `make ingest-fred` fetches configured FRED series and writes one Parquet file per series per run under `data/bronze/fred/<series_id>/`.
 - Run metadata is appended to `logs/ingestion_runs.jsonl`.
 
+## CFPB Ingestion Notes
+- `make ingest-cfpb` fetches complaint export data from `CFPB_BASE_URL` when set, otherwise falls back to the configured/default project endpoint.
+- Raw output is written to `data/bronze/cfpb_complaints/` as one Parquet file per run.
+- Source response shape is assumed to be JSON containing records as either a top-level list, or under `hits`, `complaints`, `data`, or `results`.
+
 ## Current Project Status
 - ✅ **Phase 1 complete:** repository scaffold, configs, CI, and baseline documentation/tests.
 - ✅ **Phase 2 (partial):** FRED ingestion implemented with bronze Parquet outputs and ingestion metadata logging.
-- ⏳ **Pending phases:** CFPB ingestion implementation, dbt models/tests, Dagster assets/jobs wiring, and production-grade data quality checks.
+- ✅ **Phase 2 (partial):** CFPB ingestion added for raw bronze landing with metadata logging.
+- ⏳ **Pending phases:** dbt models/tests, Dagster assets/jobs wiring, and production-grade data quality checks.
