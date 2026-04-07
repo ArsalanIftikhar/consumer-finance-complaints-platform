@@ -1,0 +1,98 @@
+[0m15:52:26.353814 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001F8E2F6D940>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001F8E0B58050>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001F8E51CFD90>]}
+
+
+============================== 15:52:26.377070 | 210e62b1-710e-4662-bd7b-545b5e47470f ==============================
+[0m15:52:26.377070 [info ] [MainThread]: Running with dbt=1.11.7
+[0m15:52:26.377997 [debug] [MainThread]: running dbt with arguments {'static_parser': 'True', 'no_print': 'None', 'version_check': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'target_path': 'None', 'printer_width': '80', 'write_json': 'True', 'empty': 'None', 'log_cache_events': 'False', 'introspect': 'True', 'cache_selected_only': 'False', 'fail_fast': 'False', 'debug': 'False', 'log_format': 'default', 'profiles_dir': '.', 'send_anonymous_usage_stats': 'True', 'quiet': 'False', 'warn_error': 'None', 'partial_parse': 'True', 'invocation_command': 'dbt debug --profiles-dir .', 'indirect_selection': 'eager', 'use_colors': 'True', 'use_experimental_parser': 'False', 'log_path': 'C:\\Users\\arsal\\Documents\\Consumer Finance Complaints Intelligence Platform\\consumer-finance-complaints-platform\\dbt\\complaints_ae\\logs'}
+[0m15:52:26.403212 [info ] [MainThread]: dbt version: 1.11.7
+[0m15:52:26.403814 [info ] [MainThread]: python version: 3.13.7
+[0m15:52:26.404586 [info ] [MainThread]: python path: C:\Users\arsal\Documents\Consumer Finance Complaints Intelligence Platform\consumer-finance-complaints-platform\.venv\Scripts\python.exe
+[0m15:52:26.405897 [info ] [MainThread]: os info: Windows-11-10.0.26200-SP0
+[0m15:52:26.623069 [info ] [MainThread]: Using profiles dir at .
+[0m15:52:26.623804 [info ] [MainThread]: Using profiles.yml file at .\profiles.yml
+[0m15:52:26.624391 [info ] [MainThread]: Using dbt_project.yml file at C:\Users\arsal\Documents\Consumer Finance Complaints Intelligence Platform\consumer-finance-complaints-platform\dbt\complaints_ae\dbt_project.yml
+[0m15:52:26.643420 [info ] [MainThread]: adapter type: duckdb
+[0m15:52:26.644099 [info ] [MainThread]: adapter version: 1.9.2
+[0m15:52:26.757906 [info ] [MainThread]: Configuration:
+[0m15:52:26.758558 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m15:52:26.759085 [info ] [MainThread]:   dbt_project.yml file [[32mOK found and valid[0m]
+[0m15:52:26.759548 [info ] [MainThread]: Required dependencies:
+[0m15:52:26.760048 [debug] [MainThread]: Executing "git --help"
+[0m15:52:26.809485 [debug] [MainThread]: STDOUT: "b"usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--no-lazy-fetch]\n           [--no-optional-locks] [--no-advice] [--bare] [--git-dir=<path>]\n           [--work-tree=<path>] [--namespace=<name>] [--config-env=<name>=<envvar>]\n           <command> [<args>]\n\nThese are common Git commands used in various situations:\n\nstart a working area (see also: git help tutorial)\n   clone      Clone a repository into a new directory\n   init       Create an empty Git repository or reinitialize an existing one\n\nwork on the current change (see also: git help everyday)\n   add        Add file contents to the index\n   mv         Move or rename a file, a directory, or a symlink\n   restore    Restore working tree files\n   rm         Remove files from the working tree and from the index\n\nexamine the history and state (see also: git help revisions)\n   bisect     Use binary search to find the commit that introduced a bug\n   diff       Show changes between commits, commit and working tree, etc\n   grep       Print lines matching a pattern\n   log        Show commit logs\n   show       Show various types of objects\n   status     Show the working tree status\n\ngrow, mark and tweak your common history\n   backfill   Download missing objects in a partial clone\n   branch     List, create, or delete branches\n   commit     Record changes to the repository\n   merge      Join two or more development histories together\n   rebase     Reapply commits on top of another base tip\n   reset      Reset current HEAD to the specified state\n   switch     Switch branches\n   tag        Create, list, delete or verify a tag object signed with GPG\n\ncollaborate (see also: git help workflows)\n   fetch      Download objects and refs from another repository\n   pull       Fetch from and integrate with another repository or a local branch\n   push       Update remote refs along with associated objects\n\n'git help -a' and 'git help -g' list available subcommands and some\nconcept guides. See 'git help <command>' or 'git help <concept>'\nto read about a specific subcommand or concept.\nSee 'git help git' for an overview of the system.\n""
+[0m15:52:26.810079 [debug] [MainThread]: STDERR: "b''"
+[0m15:52:26.810624 [info ] [MainThread]:  - git [[32mOK found[0m]
+
+[0m15:52:26.811187 [info ] [MainThread]: Connection:
+[0m15:52:26.811710 [info ] [MainThread]:   database: complaints
+[0m15:52:26.812238 [info ] [MainThread]:   schema: main
+[0m15:52:26.812718 [info ] [MainThread]:   path: ../../data/warehouse/complaints.duckdb
+[0m15:52:26.813266 [info ] [MainThread]:   config_options: None
+[0m15:52:26.814190 [info ] [MainThread]:   extensions: None
+[0m15:52:26.814774 [info ] [MainThread]:   settings: {}
+[0m15:52:26.815236 [info ] [MainThread]:   external_root: .
+[0m15:52:26.815688 [info ] [MainThread]:   use_credential_provider: None
+[0m15:52:26.816185 [info ] [MainThread]:   attach: None
+[0m15:52:26.816608 [info ] [MainThread]:   filesystems: None
+[0m15:52:26.817080 [info ] [MainThread]:   remote: None
+[0m15:52:26.817538 [info ] [MainThread]:   plugins: None
+[0m15:52:26.818022 [info ] [MainThread]:   disable_transactions: False
+[0m15:52:26.818643 [info ] [MainThread]: Registered adapter: duckdb=1.9.2
+[0m15:52:27.073117 [debug] [MainThread]: Acquiring new duckdb connection 'debug'
+[0m15:52:32.677263 [debug] [MainThread]: Using duckdb connection "debug"
+[0m15:52:32.678154 [debug] [MainThread]: On debug: select 1 as id
+[0m15:52:32.678845 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m15:52:32.709786 [debug] [MainThread]: SQL status: OK in 0.031 seconds
+[0m15:52:32.710984 [debug] [MainThread]: On debug: Close
+[0m15:52:32.711417 [info ] [MainThread]:   Connection test: [[32mOK connection ok[0m]
+
+[0m15:52:32.712011 [info ] [MainThread]: [32mAll checks passed![0m
+[0m15:52:32.713280 [debug] [MainThread]: Command `dbt debug` succeeded at 15:52:32.713107 after 6.51 seconds
+[0m15:52:32.713724 [debug] [MainThread]: Connection 'debug' was properly closed.
+[0m15:52:32.714204 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001F8E5815480>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001F8E55DCEF0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001F8E513A9C0>]}
+[0m15:52:32.714999 [debug] [MainThread]: Flushing usage events
+[0m15:52:33.143397 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m15:52:56.832041 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000249A443D940>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000249A2098050>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000249A669FD90>]}
+
+
+============================== 15:52:56.841467 | 2e49e1ba-60f6-43e3-8991-e02e27aa5f24 ==============================
+[0m15:52:56.841467 [info ] [MainThread]: Running with dbt=1.11.7
+[0m15:52:56.842209 [debug] [MainThread]: running dbt with arguments {'static_parser': 'True', 'no_print': 'None', 'version_check': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'printer_width': '80', 'write_json': 'True', 'empty': 'None', 'log_cache_events': 'False', 'introspect': 'True', 'cache_selected_only': 'False', 'fail_fast': 'False', 'debug': 'False', 'log_format': 'default', 'profiles_dir': '.', 'send_anonymous_usage_stats': 'True', 'quiet': 'False', 'warn_error': 'None', 'partial_parse': 'True', 'invocation_command': 'dbt parse --profiles-dir .', 'use_colors': 'True', 'indirect_selection': 'eager', 'use_experimental_parser': 'False', 'log_path': 'C:\\Users\\arsal\\Documents\\Consumer Finance Complaints Intelligence Platform\\consumer-finance-complaints-platform\\dbt\\complaints_ae\\logs'}
+[0m15:52:57.126848 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': '2e49e1ba-60f6-43e3-8991-e02e27aa5f24', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000249A48EB490>]}
+[0m15:52:57.192557 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': '2e49e1ba-60f6-43e3-8991-e02e27aa5f24', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000249A64EBDF0>]}
+[0m15:52:57.195122 [info ] [MainThread]: Registered adapter: duckdb=1.9.2
+[0m15:52:57.480885 [debug] [MainThread]: checksum: b80718358155fc17c3559352095564dd56ada1cc1a1c0ef2e62c857e71583775, vars: {}, profile: , target: , version: 1.11.7
+[0m15:52:57.481948 [info ] [MainThread]: Unable to do partial parsing because saved manifest not found. Starting full parse.
+[0m15:52:57.482551 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'partial_parser', 'label': '2e49e1ba-60f6-43e3-8991-e02e27aa5f24', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000249A6631250>]}
+[0m15:53:00.423701 [warn ] [MainThread]: [[33mWARNING[0m]: Configuration paths exist in your dbt_project.yml file which do not apply to any resources.
+There are 3 unused configuration paths:
+- models.complaints_ae.staging
+- models.complaints_ae.intermediate
+- models.complaints_ae.marts
+[0m15:53:00.429753 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': '2e49e1ba-60f6-43e3-8991-e02e27aa5f24', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000249A64E33E0>]}
+[0m15:53:00.433912 [info ] [MainThread]: Performance info: C:\Users\arsal\Documents\Consumer Finance Complaints Intelligence Platform\consumer-finance-complaints-platform\dbt\complaints_ae\target\perf_info.json
+[0m15:53:00.478288 [debug] [MainThread]: Wrote artifact WritableManifest to C:\Users\arsal\Documents\Consumer Finance Complaints Intelligence Platform\consumer-finance-complaints-platform\dbt\complaints_ae\target\manifest.json
+[0m15:53:00.494096 [debug] [MainThread]: Wrote artifact SemanticManifest to C:\Users\arsal\Documents\Consumer Finance Complaints Intelligence Platform\consumer-finance-complaints-platform\dbt\complaints_ae\target\semantic_manifest.json
+[0m15:53:00.495097 [debug] [MainThread]: Command `dbt parse` succeeded at 15:53:00.494947 after 3.79 seconds
+[0m15:53:00.495536 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000249A680D550>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000249A66AFE70>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000249A6BCFC70>]}
+[0m15:53:00.495963 [debug] [MainThread]: Flushing usage events
+[0m15:53:00.867797 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m16:12:53.441463 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B7A633D940>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B7A3F28050>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B7A859FD90>]}
+
+
+============================== 16:12:53.451805 | 6aac2891-b39d-412c-bcdc-cabfb4065c44 ==============================
+[0m16:12:53.451805 [info ] [MainThread]: Running with dbt=1.11.7
+[0m16:12:53.452624 [debug] [MainThread]: running dbt with arguments {'static_parser': 'True', 'no_print': 'None', 'version_check': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'printer_width': '80', 'write_json': 'True', 'introspect': 'True', 'log_cache_events': 'False', 'empty': 'None', 'cache_selected_only': 'False', 'log_format': 'default', 'debug': 'False', 'fail_fast': 'False', 'profiles_dir': '.', 'send_anonymous_usage_stats': 'True', 'quiet': 'False', 'warn_error': 'None', 'partial_parse': 'True', 'invocation_command': 'dbt parse --profiles-dir .', 'indirect_selection': 'eager', 'use_colors': 'True', 'use_experimental_parser': 'False', 'log_path': 'C:\\Users\\arsal\\Documents\\Consumer Finance Complaints Intelligence Platform\\consumer-finance-complaints-platform\\dbt\\complaints_ae\\logs'}
+[0m16:12:53.691607 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': '6aac2891-b39d-412c-bcdc-cabfb4065c44', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B7A67EB490>]}
+[0m16:12:53.758414 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': '6aac2891-b39d-412c-bcdc-cabfb4065c44', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B7A83EBDF0>]}
+[0m16:12:53.761145 [info ] [MainThread]: Registered adapter: duckdb=1.9.2
+[0m16:12:54.016686 [debug] [MainThread]: checksum: b80718358155fc17c3559352095564dd56ada1cc1a1c0ef2e62c857e71583775, vars: {}, profile: , target: , version: 1.11.7
+[0m16:12:54.112823 [info ] [MainThread]: Unable to do partial parsing because a project config has changed
+[0m16:12:54.113515 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'partial_parser', 'label': '6aac2891-b39d-412c-bcdc-cabfb4065c44', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B7A8B70450>]}
+[0m16:12:54.940713 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': '6aac2891-b39d-412c-bcdc-cabfb4065c44', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B7A83E3110>]}
+[0m16:12:54.944824 [info ] [MainThread]: Performance info: C:\Users\arsal\Documents\Consumer Finance Complaints Intelligence Platform\consumer-finance-complaints-platform\dbt\complaints_ae\target\perf_info.json
+[0m16:12:54.983198 [debug] [MainThread]: Wrote artifact WritableManifest to C:\Users\arsal\Documents\Consumer Finance Complaints Intelligence Platform\consumer-finance-complaints-platform\dbt\complaints_ae\target\manifest.json
+[0m16:12:54.986082 [debug] [MainThread]: Wrote artifact SemanticManifest to C:\Users\arsal\Documents\Consumer Finance Complaints Intelligence Platform\consumer-finance-complaints-platform\dbt\complaints_ae\target\semantic_manifest.json
+[0m16:12:54.987246 [debug] [MainThread]: Command `dbt parse` succeeded at 16:12:54.987057 after 1.77 seconds
+[0m16:12:54.987749 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B7A8942890>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B7A8942510>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B7A8A93C70>]}
+[0m16:12:54.988172 [debug] [MainThread]: Flushing usage events
+[0m16:12:55.540115 [debug] [MainThread]: An error was encountered while trying to flush usage events
