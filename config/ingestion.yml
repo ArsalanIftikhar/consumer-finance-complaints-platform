@@ -5,7 +5,7 @@ cfpb:
   mode: full_history
   date_received_min: "2011-12-01"
   size: 250000
-  sort: date_received_desc
+  sort: created_date_desc
 
 fred:
   dataset_name: fred_series
