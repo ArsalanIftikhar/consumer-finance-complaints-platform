@@ -53,9 +53,11 @@ make dagster-dev   # dagster dev with src.orchestration.definitions
   ```bash
   make ingest-cfpb
   ```
+- Uses the CFPB export endpoint in CSV mode (`format=csv`, `field=all`, `no_aggs=true`).
 - Uses `CFPB_BASE_URL` from `.env` when set; otherwise uses configured/default project URL.
+- Uses configured `cfpb.date_received_min`; `date_received_max` is set to current UTC date per run.
+- Uses configured `cfpb.size` when present; otherwise defaults to `250000`.
 - Writes one raw Parquet file per run to `data/bronze/cfpb_complaints/`.
-- Assumes a JSON response containing records as a top-level list or under `hits`, `complaints`, `data`, or `results`.
 
 ## Current Limitations
 - dbt project structure exists, but models/tests are pending.

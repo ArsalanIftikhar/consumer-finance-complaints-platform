@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 import re
 from datetime import datetime, timezone
+from io import StringIO
 from pathlib import Path
 from uuid import uuid4
 
@@ -20,6 +21,9 @@ from src.utils.paths import build_cfpb_bronze_path, get_ingestion_runs_log_path,
 
 logger = get_project_logger(__name__)
 DEFAULT_CFPB_BASE_URL = "https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/"
+DEFAULT_DATE_RECEIVED_MIN = "2011-12-01"
+DEFAULT_PAGE_SIZE = 250000
+DEFAULT_SORT = "date_received_desc"
 
 
 def _load_yaml_file(path: Path) -> dict:
@@ -56,46 +60,32 @@ def resolve_cfpb_source_url(cfpb_config: dict) -> str:
     )
 
 
-def fetch_cfpb_payload(source_url: str, timeout_seconds: int) -> dict | list:
-    logger.info("Fetching CFPB complaints from %s", source_url)
+def build_cfpb_query_params(cfpb_config: dict) -> dict[str, str | int]:
+    date_received_max = datetime.now(timezone.utc).date().isoformat()
+    return {
+        "format": "csv",
+        "field": "all",
+        "no_aggs": "true",
+        "date_received_min": cfpb_config.get("date_received_min", DEFAULT_DATE_RECEIVED_MIN),
+        "date_received_max": date_received_max,
+        "size": int(cfpb_config.get("size", DEFAULT_PAGE_SIZE)),
+        "sort": cfpb_config.get("sort", DEFAULT_SORT),
+    }
+
+
+def fetch_cfpb_csv(source_url: str, params: dict[str, str | int], timeout_seconds: int) -> str:
+    logger.info("Fetching CFPB complaints CSV from %s", source_url)
+    logger.info("Using CFPB query params: %s", params)
     try:
-        response = requests.get(source_url, timeout=timeout_seconds)
+        response = requests.get(source_url, params=params, timeout=timeout_seconds)
         response.raise_for_status()
     except requests.RequestException as exc:
-        raise RuntimeError(f"Failed to fetch CFPB complaints data: {exc}") from exc
+        raise RuntimeError(f"Failed to fetch CFPB complaints CSV export: {exc}") from exc
 
-    content_type = response.headers.get("content-type", "")
-    if "application/json" not in content_type and "text/json" not in content_type:
-        raise ValueError(
-            "CFPB source returned a non-JSON response. "
-            f"Received content-type: {content_type or 'unknown'}"
-        )
-    return response.json()
+    if not response.text.strip():
+        raise ValueError("CFPB CSV export returned an empty response body")
 
-
-def _extract_records(payload: dict | list) -> list[dict]:
-    if isinstance(payload, list):
-        return [row for row in payload if isinstance(row, dict)]
-
-    if not isinstance(payload, dict):
-        return []
-
-    if isinstance(payload.get("hits"), list):
-        rows: list[dict] = []
-        for item in payload["hits"]:
-            if isinstance(item, dict):
-                if isinstance(item.get("_source"), dict):
-                    rows.append(item["_source"])
-                else:
-                    rows.append(item)
-        return rows
-
-    for key in ("complaints", "data", "results"):
-        value = payload.get(key)
-        if isinstance(value, list):
-            return [row for row in value if isinstance(row, dict)]
-
-    return []
+    return response.text
 
 
 def _to_snake_case(name: str) -> str:
@@ -103,20 +93,15 @@ def _to_snake_case(name: str) -> str:
     return re.sub(r"_+", "_", normalized).lower()
 
 
-def normalise_cfpb_payload(
-    payload: dict | list,
-    *,
-    source_run_id: str,
-    extracted_at_utc: str,
-) -> pd.DataFrame:
-    records = _extract_records(payload)
-    if not records:
-        raise ValueError(
-            "CFPB response did not contain any complaint records. "
-            "Expected a list payload or a dict with hits/complaints/data/results."
-        )
+def normalise_cfpb_csv(csv_text: str, *, source_run_id: str, extracted_at_utc: str) -> pd.DataFrame:
+    try:
+        dataframe = pd.read_csv(StringIO(csv_text))
+    except Exception as exc:  # noqa: BLE001
+        raise ValueError(f"Failed to parse CFPB CSV response: {exc}") from exc
 
-    dataframe = pd.DataFrame(records)
+    if dataframe.empty:
+        raise ValueError("CFPB CSV export returned zero records")
+
     dataframe.columns = [_to_snake_case(column) for column in dataframe.columns]
     dataframe["source_run_id"] = source_run_id
     dataframe["extracted_at_utc"] = extracted_at_utc
@@ -126,6 +111,7 @@ def normalise_cfpb_payload(
 def run_cfpb_ingestion() -> None:
     cfpb_config = load_cfpb_ingestion_config()
     source_url = resolve_cfpb_source_url(cfpb_config)
+    query_params = build_cfpb_query_params(cfpb_config)
 
     run_id = uuid4().hex
     extracted_at_utc = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
@@ -134,9 +120,9 @@ def run_cfpb_ingestion() -> None:
 
     logger.info("Starting CFPB ingestion run_id=%s", run_id)
     try:
-        payload = fetch_cfpb_payload(source_url, int(cfpb_config["timeout_seconds"]))
-        dataframe = normalise_cfpb_payload(
-            payload,
+        csv_text = fetch_cfpb_csv(source_url, query_params, int(cfpb_config["timeout_seconds"]))
+        dataframe = normalise_cfpb_csv(
+            csv_text,
             source_run_id=run_id,
             extracted_at_utc=extracted_at_utc,
         )
@@ -151,7 +137,12 @@ def run_cfpb_ingestion() -> None:
             row_count=row_count,
             output_path=str(written_path),
             file_format=cfpb_config["output_format"],
-            notes=f"CFPB mode: {cfpb_config['mode']}",
+            notes=(
+                "CFPB CSV export mode. "
+                f"date_received_min={query_params['date_received_min']} "
+                f"date_received_max={query_params['date_received_max']} "
+                f"size={query_params['size']}"
+            ),
         )
         logger.info("CFPB ingestion complete rows=%s output=%s", row_count, written_path)
     except Exception as exc:  # noqa: BLE001
@@ -165,7 +156,7 @@ def run_cfpb_ingestion() -> None:
             row_count=None,
             output_path=str(output_path),
             file_format=cfpb_config["output_format"],
-            notes=f"CFPB mode: {cfpb_config['mode']}",
+            notes="CFPB CSV export mode",
             error_message=str(exc),
         )
         logger.exception("CFPB ingestion failed run_id=%s", run_id)

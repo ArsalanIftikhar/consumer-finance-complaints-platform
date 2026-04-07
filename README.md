@@ -61,9 +61,11 @@ Consumer finance teams often have complaint data available, but struggle to cons
 - Run metadata is appended to `logs/ingestion_runs.jsonl`.
 
 ## CFPB Ingestion Notes
-- `make ingest-cfpb` fetches complaint export data from `CFPB_BASE_URL` when set, otherwise falls back to the configured/default project endpoint.
+- `make ingest-cfpb` uses the CFPB export endpoint in CSV mode (`format=csv`, `field=all`, `no_aggs=true`).
+- `CFPB_BASE_URL` is optional; when not set, ingestion uses the default project export URL.
+- Query window defaults are config-driven (`cfpb.date_received_min`) with `date_received_max` set to the current UTC date at runtime.
 - Raw output is written to `data/bronze/cfpb_complaints/` as one Parquet file per run.
-- Source response shape is assumed to be JSON containing records as either a top-level list, or under `hits`, `complaints`, `data`, or `results`.
+- `cfpb.size` controls max records per request (default `250000` if not set).
 
 ## Current Project Status
 - ✅ **Phase 1 complete:** repository scaffold, configs, CI, and baseline documentation/tests.
