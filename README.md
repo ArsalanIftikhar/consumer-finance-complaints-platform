@@ -1,6 +1,6 @@
 # Consumer Finance Complaints Intelligence Platform
 
-A portfolio-ready Analytics Engineering project that builds a batch pipeline for consumer finance complaint intelligence. The repository is structured to show how raw public data can be turned into reliable analytical marts using Python, DuckDB, dbt, Dagster, and CI automation. Phase 1 establishes a production-minded foundation and documentation; ingestion and transformation implementation are intentionally deferred to later phases.
+A portfolio-ready Analytics Engineering project that builds a batch pipeline for consumer finance complaint intelligence. The repository is structured to show how raw public data can be turned into reliable analytical marts using Python, DuckDB, dbt, Dagster, and CI automation.
 
 ## Business Problem
 Consumer finance teams often have complaint data available, but struggle to consistently track trends, service levels, and risk concentration over time. This project creates a repeatable analytics foundation to transform complaint records and macro context into decision-ready monthly marts.
@@ -49,7 +49,26 @@ Consumer finance teams often have complaint data available, but struggle to cons
    make lint
    make test
    ```
+5. Run ingestion commands:
+   ```bash
+   make ingest-fred
+   make ingest-cfpb
+   ```
+
+## FRED Ingestion Notes
+- `FRED_API_KEY` is required in your `.env` file.
+- `make ingest-fred` fetches configured FRED series and writes one Parquet file per series per run under `data/bronze/fred/<series_id>/`.
+- Run metadata is appended to `logs/ingestion_runs.jsonl`.
+
+## CFPB Ingestion Notes
+- `make ingest-cfpb` uses the CFPB export endpoint in CSV mode (`format=csv`, `field=all`, `no_aggs=true`).
+- `CFPB_BASE_URL` is optional; when not set, ingestion uses the default project export URL.
+- Query window defaults are config-driven (`cfpb.date_received_min`) with `date_received_max` set to the current UTC date at runtime.
+- Raw output is written to `data/bronze/cfpb_complaints/` as one Parquet file per run.
+- `cfpb.size` controls max records per request (default `250000` if not set).
 
 ## Current Project Status
 - ✅ **Phase 1 complete:** repository scaffold, configs, CI, and baseline documentation/tests.
-- ⏳ **Pending phases:** ingestion implementation, dbt models/tests, Dagster assets/jobs wiring, and production-grade data quality checks.
+- ✅ **Phase 2 (partial):** FRED ingestion implemented with bronze Parquet outputs and ingestion metadata logging.
+- ✅ **Phase 2 (partial):** CFPB ingestion added for raw bronze landing with metadata logging.
+- ⏳ **Pending phases:** dbt models/tests, Dagster assets/jobs wiring, and production-grade data quality checks.

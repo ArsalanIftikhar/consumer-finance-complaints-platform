@@ -1,7 +1,15 @@
 cfpb:
-  mode: full_history
+  dataset_name: cfpb_complaints
   output_format: parquet
+  timeout_seconds: 60
+  mode: full_history
+  date_received_min: "2011-12-01"
+  size: 250000
+  sort: date_received_desc
 
 fred:
-  frequency: monthly
+  dataset_name: fred_series
   output_format: parquet
+  timeout_seconds: 60
+  file_type: json
+  observation_start: "2000-01-01"
