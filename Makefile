@@ -1,4 +1,4 @@
-.PHONY: install test lint format-check dagster-dev dbt-parse dbt-debug
+.PHONY: install test lint format-check dagster-dev dbt-parse dbt-debug ingest-fred ingest-cfpb
 
 install:
 	python -m pip install -r requirements.txt
@@ -20,3 +20,9 @@ dbt-parse:
 
 dbt-debug:
 	dbt debug --project-dir dbt/complaints_ae --profiles-dir dbt/complaints_ae
+
+ingest-fred:
+	PYTHONPATH=. python -m src.ingestion.fred
+
+ingest-cfpb:
+	PYTHONPATH=. python -m src.ingestion.cfpb
