@@ -32,16 +32,26 @@ See `.env.example` for default scaffold values.
 ```bash
 make lint          # ruff check .
 make test          # pytest
+make ingest-fred   # run FRED ingestion
 make dbt-parse     # dbt parse with project/profiles in dbt/complaints_ae
 make dbt-debug     # dbt debug with project/profiles in dbt/complaints_ae
 make dagster-dev   # dagster dev with src.orchestration.definitions
 ```
 
-## Current Phase 1 Limitations
-- Ingestion logic is not implemented yet.
+## FRED Ingestion
+- Ensure `FRED_API_KEY` is set in `.env`.
+- Run:
+  ```bash
+  make ingest-fred
+  ```
+- Outputs are written to `data/bronze/fred/<series_id>/` as one Parquet file per series per run.
+- Metadata is appended to `logs/ingestion_runs.jsonl`.
+
+## Current Limitations
+- CFPB ingestion logic is not implemented yet.
 - dbt project structure exists, but models/tests are pending.
 - Dagster definitions are minimal and do not yet materialize assets.
-- Data quality checks are limited to code linting and scaffold smoke tests.
+- Data quality checks are still limited to baseline linting/tests.
 
 ## Troubleshooting
 ### `pytest` fails with missing scaffold paths
