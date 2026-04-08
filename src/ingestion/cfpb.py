@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import os
 import re
+import tempfile
 from datetime import datetime, timezone
-from io import StringIO
 from pathlib import Path
 from uuid import uuid4
 
@@ -73,19 +73,37 @@ def build_cfpb_query_params(cfpb_config: dict) -> dict[str, str | int]:
     }
 
 
-def fetch_cfpb_csv(source_url: str, params: dict[str, str | int], timeout_seconds: int) -> str:
+def fetch_cfpb_csv_to_tempfile(
+    source_url: str, params: dict[str, str | int], timeout_seconds: int
+) -> Path:
     logger.info("Fetching CFPB complaints CSV from %s", source_url)
     logger.info("Using CFPB query params: %s", params)
+    temp_path: Path | None = None
     try:
-        response = requests.get(source_url, params=params, timeout=timeout_seconds)
-        response.raise_for_status()
+        with requests.get(
+            source_url,
+            params=params,
+            timeout=timeout_seconds,
+            stream=True,
+        ) as response:
+            response.raise_for_status()
+
+            with tempfile.NamedTemporaryFile(
+                mode="wb",
+                suffix=".csv",
+                delete=False,
+            ) as temp_file:
+                temp_path = Path(temp_file.name)
+                for chunk in response.iter_content(chunk_size=1024 * 1024):
+                    if chunk:
+                        temp_file.write(chunk)
     except requests.RequestException as exc:
         raise RuntimeError(f"Failed to fetch CFPB complaints CSV export: {exc}") from exc
 
-    if not response.text.strip():
+    if temp_path is None or not temp_path.exists() or temp_path.stat().st_size == 0:
         raise ValueError("CFPB CSV export returned an empty response body")
 
-    return response.text
+    return temp_path
 
 
 def _to_snake_case(name: str) -> str:
@@ -93,9 +111,14 @@ def _to_snake_case(name: str) -> str:
     return re.sub(r"_+", "_", normalized).lower()
 
 
-def normalise_cfpb_csv(csv_text: str, *, source_run_id: str, extracted_at_utc: str) -> pd.DataFrame:
+def normalise_cfpb_csv(
+    csv_path: Path,
+    *,
+    source_run_id: str,
+    extracted_at_utc: str,
+) -> pd.DataFrame:
     try:
-        dataframe = pd.read_csv(StringIO(csv_text))
+        dataframe = pd.read_csv(csv_path)
     except Exception as exc:  # noqa: BLE001
         raise ValueError(f"Failed to parse CFPB CSV response: {exc}") from exc
 
@@ -119,10 +142,15 @@ def run_cfpb_ingestion() -> None:
     metadata_log_path = get_ingestion_runs_log_path()
 
     logger.info("Starting CFPB ingestion run_id=%s", run_id)
+    temp_csv_path: Path | None = None
     try:
-        csv_text = fetch_cfpb_csv(source_url, query_params, int(cfpb_config["timeout_seconds"]))
+        temp_csv_path = fetch_cfpb_csv_to_tempfile(
+            source_url,
+            query_params,
+            int(cfpb_config["timeout_seconds"]),
+        )
         dataframe = normalise_cfpb_csv(
-            csv_text,
+            temp_csv_path,
             source_run_id=run_id,
             extracted_at_utc=extracted_at_utc,
         )
@@ -163,6 +191,9 @@ def run_cfpb_ingestion() -> None:
         raise RuntimeError(
             "CFPB ingestion failed. Check logs/ingestion_runs.jsonl for details."
         ) from exc
+    finally:
+        if temp_csv_path and temp_csv_path.exists():
+            temp_csv_path.unlink()
 
 
 if __name__ == "__main__":
