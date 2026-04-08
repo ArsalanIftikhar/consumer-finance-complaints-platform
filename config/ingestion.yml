@@ -4,7 +4,7 @@ cfpb:
   timeout_seconds: 60
   mode: full_history
   date_received_min: "2011-12-01"
-  size: 250000
+  size: 10000
   sort: created_date_desc
 
 fred:
